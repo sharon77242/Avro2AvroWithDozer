@@ -35,7 +35,6 @@ class AvroToAvroMapper(mapperConfig: String) {
                            mapId: String,
                            useDeepCopy: Boolean): SpecificRecord {
         logger.info { "Got new record: $inputRecord" }
-
         requiredFieldsValidator.validateRequiredFieldsInConfig(outputRecord.schema)
         requiredFieldsValidator.validateRequiredFieldsInRecord(inputRecord)
 
@@ -47,7 +46,6 @@ class AvroToAvroMapper(mapperConfig: String) {
                 }
 
         mapper.map(inputRecord, mappedRecord, mapId)
-
         logger.info { "Mapped output record is: $outputRecord" }
 
         return validateDestinationRecord(mappedRecord)
@@ -55,13 +53,11 @@ class AvroToAvroMapper(mapperConfig: String) {
 
     fun mapToANewRecord(inputRecord: SpecificRecord, outputSchema: Schema, mapId: String): SpecificRecord {
         val mappedRecord = createNewInstance(outputSchema) as SpecificRecord
-
         return baseMapper(inputRecord, mappedRecord, mapId, false)
     }
 
     fun mapToAExistingRecord(inputRecord: SpecificRecord, outputRecord: SpecificRecord, mapId: String): SpecificRecord {
         logger.info { "Existing old output record is: $outputRecord" }
-
         return baseMapper(inputRecord, outputRecord, mapId, true)
     }
 }

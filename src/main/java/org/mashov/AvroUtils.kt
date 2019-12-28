@@ -10,9 +10,7 @@ object AvroUtils{
 
     fun getUnionSchema(schema: Schema): Schema {
         return schema.types
-                .stream()
                 .filter { schema1: Schema -> schema1.type != Schema.Type.NULL }
                 .reduce { a: Schema, b: Schema -> throw IllegalStateException("Multiple elements: $a, $b") }
-                .get()
     }
 }

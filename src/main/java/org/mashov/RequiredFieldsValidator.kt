@@ -24,13 +24,8 @@ class RequiredFieldsValidator(private val classMappingMetadata: ClassMappingMeta
         }
     }
 
-    private fun unionHasInnerRequiredFieldsOnMapping(fieldName: String): Boolean{
-        classMappingMetadata.fieldMappings.forEach { fieldMappingMetadata: FieldMappingMetadata? ->
-            if (fieldMappingMetadata!!.destinationName.contains(fieldName)){
-                return true
-            }
-        }
-        return false
+    private fun unionHasInnerRequiredFieldsOnMapping(fieldName: String): Boolean {
+        return classMappingMetadata.fieldMappings.any { it.destinationName.contains(fieldName) }
     }
 
     private fun validateNonPrimitive(field: Schema.Field, fieldName: String) {
@@ -49,10 +44,8 @@ class RequiredFieldsValidator(private val classMappingMetadata: ClassMappingMeta
     }
 
     private fun throwNonProvidedField(fieldName: String) {
-        if (requiredFieldMissing(fieldName)) {
-            throw RuntimeException(
-                    "Field named $fieldName is a required field in output schema but is not provided in config")
-        }
+        require(!requiredFieldMissing(fieldName))
+        { "Field named $fieldName is a required field in output schema but is not provided in config"}
     }
 
     private fun validateRequiredFieldsInConfig(outputSchema: Schema, firstCall: Boolean, currentFieldName: String) {
@@ -101,9 +94,9 @@ class RequiredFieldsValidator(private val classMappingMetadata: ClassMappingMeta
     }
 
     fun validateRequiredFieldsInRecord(record: SpecificRecord) {
-        requiredFieldsOnSchema.forEach {fieldMappingMetadata: FieldMappingMetadata ->
+        requiredFieldsOnSchema.forEach {
             var field: Any = record
-            val fullFieldName = fieldMappingMetadata.sourceName.split(".").toMutableList()
+            val fullFieldName = it.sourceName.split(".").toMutableList()
             fullFieldName.forEach { currentFieldName: String ->
                 field = reflectiveGetAndValidateMember(field, currentFieldName)
             }
