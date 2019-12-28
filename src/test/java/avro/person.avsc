@@ -1,5 +1,5 @@
 {
-  "namespace": "example.generated",
+  "namespace": "org.mashov",
   "type": "record",
   "name": "BdPerson",
   "fields": [

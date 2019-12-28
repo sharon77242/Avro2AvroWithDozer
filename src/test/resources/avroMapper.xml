@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://dozermapper.github.io/schema/bean-mapping"
+          xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping https://dozermapper.github.io/schema/bean-mapping.xsd">
+
+    <mapping map-null="false" wildcard="false" map-id="firstMapping">
+        <class-a>org.mashov.BdPerson</class-a>
+        <class-b>org.mashov.BdPersonOut</class-b>
+        <field>
+            <a>identification.id</a>
+            <b>identificationout.idout</b>
+        </field>
+        <field>
+            <a>identification.username</a>
+            <b>identificationout.usernameout</b>
+        </field>
+        <field>
+            <a>cards</a>
+            <b>cardsout</b>
+        </field>
+        <field>
+            <a>additional</a>
+            <b>additionalout</b>
+        </field>
+        <field>
+            <a>children</a>
+            <b>childrenout</b>
+        </field>
+    </mapping>
+</mappings>
