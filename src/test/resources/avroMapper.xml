@@ -4,8 +4,8 @@
           xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping https://dozermapper.github.io/schema/bean-mapping.xsd">
 
     <mapping map-null="false" wildcard="false" map-id="firstMapping">
-        <class-a>org.mashov.BdPerson</class-a>
-        <class-b>org.mashov.BdPersonOut</class-b>
+        <class-a>org.mashov.generated.BdPerson</class-a>
+        <class-b>org.mashov.generated.BdPersonOut</class-b>
         <field>
             <a>identification.id</a>
             <b>identificationout.idout</b>

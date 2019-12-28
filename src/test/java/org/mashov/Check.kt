@@ -1,16 +1,12 @@
 package org.mashov
 
-import com.github.dozermapper.core.DozerBeanMapperBuilder
-import org.apache.avro.specific.SpecificData
-import org.apache.avro.specific.SpecificRecord
 import org.junit.jupiter.api.Test
+import org.mashov.generated.*
 import java.util.*
-import java.util.logging.Logger
 
+private const val DEFAULT_MAPPER = "avroMapper.xml"
 class Check {
-    private val mapper = DozerBeanMapperBuilder.create()
-            .withMappingFiles(DEFAULT_MAPPER)
-            .build()
+    private val avroToAvroMapper = AvroToAvroMapper(DEFAULT_MAPPER)
 
     private fun generateInputRecordExample(): BdPerson {
         val child1 = Child.newBuilder().setName("noob").build()
@@ -24,7 +20,7 @@ class Check {
         return BdPerson.newBuilder()
                 .setIdentification(
                         Identification.newBuilder()
-                              //  .setId(2)
+                                .setId(2)
                                 .setUsername("sharone")
                                 .build())
                 .setUsername("mrscarter")
@@ -54,48 +50,17 @@ class Check {
                 .build()
     }
 
-    private fun validateRecord(record: SpecificRecord) {
-        val newBuilder = record.javaClass.getMethod("newBuilder", record.javaClass)
-        val recordBuilder = newBuilder.invoke(record, record)
-        recordBuilder.javaClass.getMethod("build").invoke(recordBuilder)
-    }
-
     @Test
     fun mapToANewRecord() {
-        val classMappingMetadata = mapper.mappingMetadata.classMappings.first()
-        val requiredFieldsChecker = RequiredFieldsValidator(classMappingMetadata)
-        requiredFieldsChecker.validateRequiredFieldsInConfig(BdPersonOut.`SCHEMA$`)
         val p = generateInputRecordExample()
-
-        requiredFieldsChecker.validateRequiredFieldsInRecord(p)
-        val p1 = mapper.map(p, BdPersonOut::class.java, "firstMapping")
-
-        validateRecord(p1)
-
-        LOGGER.info("p1 is: $p1")
+        avroToAvroMapper.mapToANewRecord(p, BdPersonOut.`SCHEMA$`, "firstMapping")
     }
 
     @Test
     fun mapToAExistingRecord() {
-        val classMappingMetadata = mapper.mappingMetadata.classMappings.first()
-        val requiredFieldsChecker = RequiredFieldsValidator(classMappingMetadata)
-        requiredFieldsChecker.validateRequiredFieldsInConfig(BdPersonOut.`SCHEMA$`)
-
         val p = generateInputRecordExample()
-        LOGGER.info("p is: $p")
-        requiredFieldsChecker.validateRequiredFieldsInRecord(p)
-
         val p1 = generateOutputRecordExample()
-        val p1Copy = SpecificData.get().deepCopy(BdPersonOut.`SCHEMA$`, p1)
-        LOGGER.info("p1 before conversion is: $p1Copy")
-
-        mapper.map(p, p1Copy, "firstMapping")
-        validateRecord(p1Copy)
-        LOGGER.info("p1 after builder is: $p1Copy")
+        avroToAvroMapper.mapToAExistingRecord(p, p1, "firstMapping")
     }
 
-    companion object {
-        private val LOGGER = Logger.getLogger(Check::javaClass.name)
-        private const val DEFAULT_MAPPER = "avroMapper.xml"
-    }
 }
