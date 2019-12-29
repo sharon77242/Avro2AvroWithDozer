@@ -6,7 +6,8 @@ import mu.KotlinLogging
 import org.apache.avro.Schema
 import org.apache.avro.specific.SpecificRecord
 import org.mashov.AvroUtils.getUnionSchema
-import org.mashov.AvroUtils.primitiveField
+import org.mashov.AvroUtils.primitive
+import org.mashov.AvroUtils.required
 import java.util.function.Consumer
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
@@ -35,7 +36,7 @@ class RequiredFieldsValidator(private val classMappingMetadata: ClassMappingMeta
                 return
             }
 
-            fieldSchema = getUnionSchema(fieldSchema)
+            fieldSchema = fieldSchema.getUnionSchema()
         }
 
         if (fieldSchema.type == Schema.Type.RECORD) {
@@ -48,25 +49,29 @@ class RequiredFieldsValidator(private val classMappingMetadata: ClassMappingMeta
         { "Field named $fieldName is a required field in output schema but is not provided in config"}
     }
 
-    private fun validateRequiredFieldsInConfig(outputSchema: Schema, firstCall: Boolean, currentFieldName: String) {
+    private fun validateRequiredFieldsInConfig(outputSchema: Schema, firstCall: Boolean, previousFieldName: String) {
         outputSchema.fields
                 .forEach(Consumer { field: Schema.Field ->
-                    var fieldName = field.name()
-                    if (!firstCall) {
-                        fieldName = "$currentFieldName.$fieldName"
-                    }
-
-                    if (primitiveField(field)) {
-                        val requiredField = !field.hasDefaultValue()
-                        if (requiredField) {
-                            throwNonProvidedField(fieldName)
-                            requiredFieldsOnSchema.add(
-                                    classMappingMetadata.getFieldMappingByDestination(fieldName))
-                        }
-                    } else {
-                        validateNonPrimitive(field, fieldName)
+                    var fieldName: String = field.name()
+                    fieldName = concatPreviousFieldName(firstCall, fieldName, previousFieldName)
+                    when (field.primitive()) {
+                        true -> saveFieldIfRequired(field, fieldName)
+                        false -> validateNonPrimitive(field, fieldName)
                     }
                 })
+    }
+
+    private fun saveFieldIfRequired(field: Schema.Field, fieldName: String) {
+        if (field.required()) {
+            throwNonProvidedField(fieldName)
+            requiredFieldsOnSchema.add(
+                    classMappingMetadata.getFieldMappingByDestination(fieldName))
+        }
+    }
+
+    private fun concatPreviousFieldName(firstCall: Boolean, fieldName: String, previousFieldName: String): String {
+        return if (!firstCall) "$previousFieldName.$fieldName"
+        else fieldName
     }
 
     fun validateRequiredFieldsInConfig(outputSchema: Schema) {
@@ -80,12 +85,12 @@ class RequiredFieldsValidator(private val classMappingMetadata: ClassMappingMeta
         }
     }
 
-    private fun getMembers(obj: Any): Collection<KProperty1<Any, *>> {
-        return obj.javaClass.kotlin.memberProperties
+    private fun Any.getMembers(): Collection<KProperty1<Any, *>> {
+        return this.javaClass.kotlin.memberProperties
     }
 
     private fun reflectiveGetAndValidateMember(obj: Any, memberName: String): Any {
-        val member = getMembers(obj).find { kProperty1 -> kProperty1.name == memberName }
+        val member = obj.getMembers().find { kProperty1 -> kProperty1.name == memberName }
         requireNotNull(member, { "Could not find field named <$memberName> in object <$obj>" })
 
         val memberValue = member.get(obj)
