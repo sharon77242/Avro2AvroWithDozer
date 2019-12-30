@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "DoubleOut",
+    "fields": [
+    {
+        "name": "angle",
+        "type": "double"
+    }]
+}

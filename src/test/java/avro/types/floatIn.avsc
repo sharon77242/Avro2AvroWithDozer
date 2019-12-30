@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "FloatIn",
+    "fields": [
+    {
+        "name": "angle",
+        "type": "float"
+    }]
+}

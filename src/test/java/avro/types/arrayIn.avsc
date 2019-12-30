@@ -1,0 +1,23 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "ArrayIn",
+    "fields": [
+      {
+        "name": "childrens",
+        "type": {
+          "type": "array",
+          "items": {
+            "name": "Child",
+            "type": "record",
+            "fields": [
+            {
+              "name": "name",
+              "type": "string"
+            }
+            ]
+          }
+        }
+      }
+   ]
+}

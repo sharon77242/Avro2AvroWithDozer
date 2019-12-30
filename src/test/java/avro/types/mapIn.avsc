@@ -1,0 +1,14 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "MapIn",
+    "fields": [
+      {
+        "name": "additional",
+           "type": {
+             "type": "map",
+             "values": "string"
+           }
+      }
+   ]
+}

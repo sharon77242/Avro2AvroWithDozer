@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "BytesOut",
+    "fields": [
+    {
+        "name": "usernameout",
+        "type": "bytes"
+    }]
+}

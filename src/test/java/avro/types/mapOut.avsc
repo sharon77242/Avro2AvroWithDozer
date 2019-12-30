@@ -1,0 +1,14 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "MapOut",
+    "fields": [
+      {
+        "name": "additionalout",
+           "type": {
+             "type": "map",
+             "values": "string"
+           }
+      }
+   ]
+}

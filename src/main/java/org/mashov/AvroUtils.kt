@@ -28,10 +28,10 @@ object AvroUtils {
         return SpecificData.newInstance(Class.forName(schemaCopy.fullName), schemaCopy) as SpecificRecord
     }
 
-    fun SpecificRecord.createAndValidateRecord(): SpecificRecord {
+    fun <T: Any> SpecificRecord.createAndValidateRecord(): T {
         val recordBuilder = this.javaClass.getMethod("newBuilder", this.javaClass)
                 .invoke(this, this)
         return recordBuilder.javaClass.getMethod("build")
-                .invoke(recordBuilder) as SpecificRecord
+                .invoke(recordBuilder) as T
     }
 }

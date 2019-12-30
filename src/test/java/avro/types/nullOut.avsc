@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "NullOut",
+    "fields": [
+    {
+        "name": "iamnullout",
+        "type": "null"
+    }]
+}

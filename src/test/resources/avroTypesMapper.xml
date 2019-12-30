@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://dozermapper.github.io/schema/bean-mapping"
+          xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping https://dozermapper.github.io/schema/bean-mapping.xsd">
+
+    <mapping map-null="false" wildcard="false" map-id="enumMapping">
+        <class-a>org.mashov.generated.EnumIn</class-a>
+        <class-b>org.mashov.generated.EnumOut</class-b>
+        <field>
+            <a>cards</a>
+            <b>cardsout</b>
+        </field>
+    </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="arrayMapping">
+        <class-a>org.mashov.generated.ArrayIn</class-a>
+        <class-b>org.mashov.generated.ArrayOut</class-b>
+        <field>
+            <a>childrens</a>
+            <b>childrensout</b>
+        </field>
+    </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="mapMapping">
+        <class-a>org.mashov.generated.MapIn</class-a>
+        <class-b>org.mashov.generated.MapOut</class-b>
+        <field>
+            <a>additional</a>
+            <b>additionalout</b>
+        </field>
+    </mapping>
+</mappings>

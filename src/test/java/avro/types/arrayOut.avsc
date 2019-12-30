@@ -1,0 +1,23 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "ArrayOut",
+    "fields": [
+      {
+        "name": "childrensout",
+        "type": {
+          "type": "array",
+          "items": {
+            "name": "Child",
+            "type": "record",
+            "fields": [
+            {
+              "name": "name",
+              "type": "string"
+            }
+            ]
+          }
+        }
+      }
+   ]
+}

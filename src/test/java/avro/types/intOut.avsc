@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "IntOut",
+    "fields": [
+    {
+        "name": "ageout",
+        "type": "int"
+    }]
+}

@@ -15,17 +15,27 @@ class AvroToAvroMapper(mapperConfig: String) {
     private val mapper: Mapper = DozerBeanMapperBuilder.create()
             .withMappingFiles(mapperConfig)
             .build()
-    private val classMappingMetadata: ClassMappingMetadata = mapper.mappingMetadata.classMappings.first()
-    private var requiredFieldsValidator: RequiredFieldsValidator = RequiredFieldsValidator(classMappingMetadata)
+    private var lastSourceClassName: String = ""
+    private var lastDestinationClassName: String = ""
+    private var lastMapId: String = ""
+    private lateinit var requiredFieldsValidator: RequiredFieldsValidator
 
-    private fun baseMapper(inputRecord: SpecificRecord,
-                           outputRecord: SpecificRecord,
-                           mapId: String,
-                           useDeepCopy: Boolean): SpecificRecord {
+    private fun <T: Any> baseMapper(inputRecord: SpecificRecord,
+                                              outputRecord: SpecificRecord,
+                                              mapId: String,
+                                              useDeepCopy: Boolean):  T{
         logger.info { "Got new record: $inputRecord" }
-        requiredFieldsValidator.validateRequiredFieldsInConfig(outputRecord.schema)
-        requiredFieldsValidator.validateRequiredFieldsInRecord(inputRecord)
 
+        if (newMapping(outputRecord, inputRecord, mapId)) {
+            lastDestinationClassName = outputRecord.schema.fullName
+            lastSourceClassName = inputRecord.schema.fullName
+            lastMapId = mapId
+
+            requiredFieldsValidator = RequiredFieldsValidator(getClassMappingMetadata(outputRecord, inputRecord))
+            requiredFieldsValidator.validateRequiredFieldsInConfig(outputRecord.schema)
+        }
+
+        requiredFieldsValidator.validateRequiredFieldsInRecord(inputRecord)
 
         val mappedRecord: SpecificRecord =
                 when (useDeepCopy) {
@@ -39,9 +49,20 @@ class AvroToAvroMapper(mapperConfig: String) {
         return mappedRecord.createAndValidateRecord()
     }
 
-    fun mapToANewRecord(inputRecord: SpecificRecord, outputSchema: Schema, mapId: String): SpecificRecord {
+    private fun getClassMappingMetadata(outputRecord: SpecificRecord, inputRecord: SpecificRecord): ClassMappingMetadata {
+        return mapper.mappingMetadata.classMappings.first {
+            it.destinationClassName == outputRecord.schema.fullName && it.sourceClassName == inputRecord.schema.fullName
+        }
+    }
+
+    private fun newMapping(outputRecord: SpecificRecord, inputRecord: SpecificRecord, mapId: String) =
+            lastDestinationClassName != outputRecord.schema.fullName ||
+                    lastSourceClassName != inputRecord.schema.fullName ||
+                    lastMapId != mapId
+
+    fun <T: Any> mapToANewRecord(inputRecord: SpecificRecord, outputSchema: Schema, mapId: String): T {
         val mappedRecord = outputSchema.createNewInstance()
-        return baseMapper(inputRecord, mappedRecord, mapId, false)
+        return baseMapper(inputRecord, mappedRecord, mapId, false) as T
     }
 
     fun mapToAExistingRecord(inputRecord: SpecificRecord, outputRecord: SpecificRecord, mapId: String): SpecificRecord {

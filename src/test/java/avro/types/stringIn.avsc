@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "StringIn",
+    "fields": [
+    {
+        "name": "username",
+        "type": "string"
+    }]
+}

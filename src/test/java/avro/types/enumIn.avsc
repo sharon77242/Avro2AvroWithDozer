@@ -1,0 +1,20 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "EnumIn",
+    "fields": [
+    {
+      "name": "cards",
+      "type":
+        {
+          "type": "enum",
+          "name": "Cards",
+          "symbols": [
+            "SPADES",
+            "HEARTS",
+            "DIAMONDS",
+            "CLUBS"
+          ]
+        }
+    }]
+}

@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "StringOut",
+    "fields": [
+    {
+        "name": "usernameout",
+        "type": "string"
+    }]
+}

@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "FloatOut",
+    "fields": [
+    {
+        "name": "angleout",
+        "type": "float"
+    }]
+}

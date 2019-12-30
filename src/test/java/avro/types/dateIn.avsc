@@ -1,0 +1,10 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "dateIn",
+    "fields": [
+    {
+        "name": "date",
+        "type": "long", "logicalType":"timestamp-millis"
+    }]
+}
