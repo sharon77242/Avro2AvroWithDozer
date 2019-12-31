@@ -26,12 +26,14 @@ class AvroToAvroMapper(mapperConfig: String) {
                                               useDeepCopy: Boolean):  T{
         logger.info { "Got new record: $inputRecord" }
 
+
+
         if (newMapping(outputRecord, inputRecord, mapId)) {
             lastDestinationClassName = outputRecord.schema.fullName
             lastSourceClassName = inputRecord.schema.fullName
             lastMapId = mapId
 
-            requiredFieldsValidator = RequiredFieldsValidator(getClassMappingMetadata(outputRecord, inputRecord))
+            requiredFieldsValidator = RequiredFieldsValidator(getClassMappingMetadata())
             requiredFieldsValidator.validateRequiredFieldsInConfig(outputRecord.schema)
         }
 
@@ -49,10 +51,21 @@ class AvroToAvroMapper(mapperConfig: String) {
         return mappedRecord.createAndValidateRecord()
     }
 
-    private fun getClassMappingMetadata(outputRecord: SpecificRecord, inputRecord: SpecificRecord): ClassMappingMetadata {
-        return mapper.mappingMetadata.classMappings.first {
-            it.destinationClassName == outputRecord.schema.fullName && it.sourceClassName == inputRecord.schema.fullName
-        }
+    private fun getClassMappingMetadata(): ClassMappingMetadata {
+        val classMappingMetadata =
+                mapper.mappingMetadata.classMappings.firstOrNull {
+                    it.destinationClassName == lastDestinationClassName &&
+                            it.sourceClassName == lastSourceClassName &&
+                            it.mapId == lastMapId
+                }
+
+        requireNotNull(classMappingMetadata, {
+            "Could not find proper mapping from files: ${mapper.mapperModelContext.mappingFiles} " +
+                    "with mapId: $lastMapId, \nDestinationClass: $lastDestinationClassName " +
+                    "and SourceClass: $lastSourceClassName"
+        })
+
+        return classMappingMetadata
     }
 
     private fun newMapping(outputRecord: SpecificRecord, inputRecord: SpecificRecord, mapId: String) =
@@ -60,13 +73,31 @@ class AvroToAvroMapper(mapperConfig: String) {
                     lastSourceClassName != inputRecord.schema.fullName ||
                     lastMapId != mapId
 
-    fun <T: Any> mapToANewRecord(inputRecord: SpecificRecord, outputSchema: Schema, mapId: String): T {
-        val mappedRecord = outputSchema.createNewInstance()
-        return baseMapper(inputRecord, mappedRecord, mapId, false) as T
+    fun <T : SpecificRecord> mapToANewRecord(inputRecord: SpecificRecord, outputSchema: Schema, mapId: String): T? {
+        return try {
+            val mappedRecord = outputSchema.createNewInstance()
+            baseMapper(inputRecord, mappedRecord, mapId, false)
+        } catch (e: Exception) {
+            logger.error {
+                "Could not convert record: ${inputRecord.schema.fullName}:$inputRecord" +
+                        " to schema: ${outputSchema.fullName} with mapId: $mapId \n" +
+                        "Got Exception $e"
+            }
+            null
+        }
     }
 
-    fun mapToAExistingRecord(inputRecord: SpecificRecord, outputRecord: SpecificRecord, mapId: String): SpecificRecord {
-        logger.info { "Existing old output record is: $outputRecord" }
-        return baseMapper(inputRecord, outputRecord, mapId, true)
+    fun <T : SpecificRecord> mapToAExistingRecord(inputRecord: SpecificRecord, outputRecord: SpecificRecord, mapId: String): T? {
+        return try {
+            logger.info { "Existing old output record is: $outputRecord" }
+            baseMapper(inputRecord, outputRecord, mapId, true)
+        } catch (e: Exception) {
+            logger.error {
+                "Could not convert record: ${inputRecord.schema.fullName}:$inputRecord" +
+                        " to schema: ${outputRecord.schema.fullName} with mapId: $mapId \n" +
+                        "Got Exception $e"
+            }
+            null
+        }
     }
 }

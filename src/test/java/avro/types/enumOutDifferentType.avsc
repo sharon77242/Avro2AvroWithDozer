@@ -1,20 +1,19 @@
 {
     "namespace": "org.mashov.generated",
     "type": "record",
-    "name": "EnumIn",
+    "name": "EnumOutDifferentType",
     "fields": [
     {
-      "name": "card",
+      "name": "cardout",
       "type":
         {
           "type": "enum",
-          "name": "Card",
+          "name": "CardOut",
           "symbols": [
             "SPADES",
             "HEARTS",
             "DIAMONDS",
-            "CLUBS",
-            "ACE"
+            "CLUBS"
           ]
         }
     }]

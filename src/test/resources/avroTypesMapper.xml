@@ -7,8 +7,17 @@
         <class-a>org.mashov.generated.EnumIn</class-a>
         <class-b>org.mashov.generated.EnumOut</class-b>
         <field>
-            <a>cards</a>
-            <b>cardsout</b>
+            <a>card</a>
+            <b>cardout</b>
+        </field>
+    </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="enumDifferentMapping">
+        <class-a>org.mashov.generated.EnumIn</class-a>
+        <class-b>org.mashov.generated.EnumOutDifferentType</class-b>
+        <field>
+            <a>card</a>
+            <b>cardout</b>
         </field>
     </mapping>
 
@@ -27,6 +36,51 @@
         <field>
             <a>additional</a>
             <b>additionalout</b>
+        </field>
+    </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="stringMapping">
+        <class-a>org.mashov.generated.StringIn</class-a>
+        <class-b>org.mashov.generated.StringOut</class-b>
+        <field>
+            <a>username</a>
+            <b>usernameout</b>
+        </field>
+    </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="bytesMapping">
+        <class-a>org.mashov.generated.BytesIn</class-a>
+        <class-b>org.mashov.generated.BytesOut</class-b>
+        <field>
+            <a>username</a>
+            <b>usernameout</b>
+        </field>
+    </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="intMapping">
+        <class-a>org.mashov.generated.IntIn</class-a>
+        <class-b>org.mashov.generated.IntOut</class-b>
+        <field>
+            <a>age</a>
+            <b>ageout</b>
+        </field>
+    </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="longMapping">
+        <class-a>org.mashov.generated.LongIn</class-a>
+        <class-b>org.mashov.generated.LongOut</class-b>
+        <field>
+            <a>painumber</a>
+            <b>painumberout</b>
+        </field>
+    </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="floatMapping">
+        <class-a>org.mashov.generated.FloatIn</class-a>
+        <class-b>org.mashov.generated.FloatOut</class-b>
+        <field>
+            <a>angle</a>
+            <b>angleout</b>
         </field>
     </mapping>
 </mappings>

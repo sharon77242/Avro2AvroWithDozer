@@ -4,16 +4,17 @@
     "name": "EnumOut",
     "fields": [
     {
-      "name": "cardsout",
+      "name": "cardout",
       "type":
         {
           "type": "enum",
-          "name": "Cards",
+          "name": "Card",
           "symbols": [
             "SPADES",
             "HEARTS",
             "DIAMONDS",
-            "CLUBS"
+            "CLUBS",
+            "ACE"
           ]
         }
     }]
