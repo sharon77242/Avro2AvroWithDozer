@@ -13,6 +13,7 @@ import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 
 private val logger = KotlinLogging.logger {}
+
 class RequiredFieldsValidator(private val classMappingMetadata: ClassMappingMetadata) {
     private val requiredFieldsOnSchema: MutableList<FieldMappingMetadata> = ArrayList()
 
@@ -46,7 +47,7 @@ class RequiredFieldsValidator(private val classMappingMetadata: ClassMappingMeta
 
     private fun throwNonProvidedField(fieldName: String) {
         require(!requiredFieldMissing(fieldName))
-        { "Field named $fieldName is a required field in output schema but is not provided in config"}
+        { "Field named $fieldName is a required field in output schema but is not provided in config" }
     }
 
     private fun validateRequiredFieldsInConfig(outputSchema: Schema, firstCall: Boolean, previousFieldName: String) {

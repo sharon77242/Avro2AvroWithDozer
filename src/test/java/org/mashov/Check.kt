@@ -6,6 +6,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 private const val DEFAULT_MAPPER = "avroTypesMapper.xml"
+
 class Check {
     private var avroToAvroMapper = AvroToAvroMapper(DEFAULT_MAPPER)
 
@@ -204,7 +205,7 @@ class Check {
 
     @Test
     fun mapDate() {
-        val currentDate =  java.util.Calendar.getInstance().timeInMillis
+        val currentDate = java.util.Calendar.getInstance().timeInMillis
         val inputRecord = DateIn.newBuilder().setDate(currentDate).build()
         val expectedOutputRecord = DateOut.newBuilder().setDateout(currentDate).build()
 

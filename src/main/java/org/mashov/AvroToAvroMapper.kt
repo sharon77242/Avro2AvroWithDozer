@@ -11,6 +11,7 @@ import org.mashov.AvroUtils.createAndValidateRecord
 import org.mashov.AvroUtils.createNewInstance
 
 private val logger = KotlinLogging.logger {}
+
 class AvroToAvroMapper(mapperConfig: String) {
     private val mapper: Mapper = DozerBeanMapperBuilder.create()
             .withMappingFiles(mapperConfig)
@@ -20,10 +21,10 @@ class AvroToAvroMapper(mapperConfig: String) {
     private var lastMapId: String = ""
     private lateinit var requiredFieldsValidator: RequiredFieldsValidator
 
-    private fun <T: Any> baseMapper(inputRecord: SpecificRecord,
-                                              outputRecord: SpecificRecord,
-                                              mapId: String,
-                                              useDeepCopy: Boolean):  T{
+    private fun <T : Any> baseMapper(inputRecord: SpecificRecord,
+                                     outputRecord: SpecificRecord,
+                                     mapId: String,
+                                     useDeepCopy: Boolean): T {
         logger.info { "Got new record: $inputRecord" }
 
 

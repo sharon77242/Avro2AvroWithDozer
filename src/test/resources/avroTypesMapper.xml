@@ -102,7 +102,7 @@
         </field>
     </mapping>
 
-    <mapping  wildcard="false" map-id="nullMapping">
+    <mapping wildcard="false" map-id="nullMapping">
         <class-a>org.mashov.generated.NullIn</class-a>
         <class-b>org.mashov.generated.NullOut</class-b>
         <field>
@@ -111,7 +111,7 @@
         </field>
     </mapping>
 
-    <mapping  wildcard="false" map-id="dateMapping">
+    <mapping wildcard="false" map-id="dateMapping">
         <class-a>org.mashov.generated.DateIn</class-a>
         <class-b>org.mashov.generated.DateOut</class-b>
         <field>
