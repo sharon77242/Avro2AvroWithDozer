@@ -2,7 +2,6 @@ package org.mashov
 
 import org.junit.jupiter.api.Test
 import org.mashov.generated.*
-import java.nio.ByteBuffer
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -174,34 +173,45 @@ class Check {
 
     @Test
     fun mapDouble() {
-//        val inputRecord = DoubleIn.newBuilder().setAngle(250.1).build()
-//        val expectedOutputRecord = DoubleOut.newBuilder().setAngle(25).build()
-//
-//        val actualOutputRecord =
-//                avroToAvroMapper.mapToANewRecord<IntOut>(inputRecord, IntOut.`SCHEMA$`, "intMapping")
-//        assertEquals(expectedOutputRecord, actualOutputRecord, "Int mapping failed")
+        val inputRecord = DoubleIn.newBuilder().setAngle(250.1).build()
+        val expectedOutputRecord = DoubleOut.newBuilder().setAngleout(250.1).build()
+
+        val actualOutputRecord =
+                avroToAvroMapper.mapToANewRecord<DoubleOut>(inputRecord, DoubleOut.`SCHEMA$`, "doubleMapping")
+        assertEquals(expectedOutputRecord, actualOutputRecord, "Double mapping failed")
     }
 
     @Test
     fun mapBoolean() {
+        val inputRecord = BooleanIn.newBuilder().setAmibalding(true).build()
+        val expectedOutputRecord = BooleanOut.newBuilder().setAmibaldingout(true).build()
+
+        val actualOutputRecord =
+                avroToAvroMapper.mapToANewRecord<BooleanOut>(inputRecord, BooleanOut.`SCHEMA$`, "booleanMapping")
+        assertEquals(expectedOutputRecord, actualOutputRecord, "Boolean mapping failed")
     }
 
     @Test
     fun mapNull() {
+        val inputRecord = NullIn.newBuilder().setIamnull(null).build()
+
+        val actualOutputRecord =
+                avroToAvroMapper.mapToANewRecord<NullOut>(inputRecord, NullOut.`SCHEMA$`, "nullMapping")
+
+        // There's no better way i found for testing null type not being mapped
+        assertNull(actualOutputRecord, "Null mapping failed")
     }
 
     @Test
     fun mapDate() {
-    }
+        val currentDate =  java.util.Calendar.getInstance().timeInMillis
+        val inputRecord = DateIn.newBuilder().setDate(currentDate).build()
+        val expectedOutputRecord = DateOut.newBuilder().setDateout(currentDate).build()
 
-//    @Test
-//    fun mapArray() {
-//        val inputRecord: ArrayIn = ArrayIn.newBuilder().setCards(Cards.DIAMONDS).build()
-//        val expectedOutputRecord:EnumOut = EnumOut.newBuilder().setCardsout(Cards.DIAMONDS).build()
-//        val actualOutputRecord =
-//                avroToAvroMapper.mapToANewRecord(inputRecord, EnumOut.`SCHEMA$`, "enumMapping")
-//        assertEquals(expectedOutputRecord, actualOutputRecord, "Enum mapping failed")
-//    }
+        val actualOutputRecord =
+                avroToAvroMapper.mapToANewRecord<DateOut>(inputRecord, DateOut.`SCHEMA$`, "dateMapping")
+        assertEquals(expectedOutputRecord, actualOutputRecord, "Date mapping failed")
+    }
 
 
 //    @Test

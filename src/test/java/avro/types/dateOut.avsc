@@ -1,7 +1,7 @@
 {
     "namespace": "org.mashov.generated",
     "type": "record",
-    "name": "dateOut",
+    "name": "DateOut",
     "fields": [
     {
         "name": "dateout",

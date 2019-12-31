@@ -4,7 +4,7 @@
     "name": "DoubleOut",
     "fields": [
     {
-        "name": "angle",
+        "name": "angleout",
         "type": "double"
     }]
 }

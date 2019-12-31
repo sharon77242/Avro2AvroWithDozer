@@ -1,7 +1,7 @@
 {
     "namespace": "org.mashov.generated",
     "type": "record",
-    "name": "dateIn",
+    "name": "DateIn",
     "fields": [
     {
         "name": "date",
