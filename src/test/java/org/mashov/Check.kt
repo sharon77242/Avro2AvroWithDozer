@@ -113,6 +113,12 @@ class Check {
 
     @Test
     fun mapFixed() {
+        val inputRecord = FixedIn.newBuilder().setFixes(md5()).build()
+        val expectedOutputRecord = FixedOut.newBuilder().setFixesout(md5Out()).build()
+
+        val actualOutputRecord =
+                avroToAvroMapper.mapToANewRecord<FixedOut>(inputRecord, FixedOut.`SCHEMA$`, "fixedMapping")
+        assertEquals(expectedOutputRecord, actualOutputRecord, "Fixed mapping failed")
     }
 
     @Test

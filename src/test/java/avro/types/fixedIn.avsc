@@ -1,0 +1,14 @@
+{
+    "namespace": "org.mashov.generated",
+    "type": "record",
+    "name": "FixedIn",
+    "fields": [
+    {
+        "name": "fixes",
+        "type": {
+            "type": "fixed",
+            "size": 16,
+            "name": "md5"
+        }
+    }]
+}

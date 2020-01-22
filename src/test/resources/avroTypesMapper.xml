@@ -119,4 +119,13 @@
             <b>dateout</b>
         </field>
     </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="fixedMapping">
+        <class-a>org.mashov.generated.FixedIn</class-a>
+        <class-b>org.mashov.generated.FixedOut</class-b>
+        <field>
+            <a>fixes</a>
+            <b>fixesout</b>
+        </field>
+    </mapping>
 </mappings>
