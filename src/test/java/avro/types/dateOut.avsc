@@ -5,6 +5,7 @@
     "fields": [
     {
         "name": "dateout",
-        "type": "long", "logicalType":"timestamp-millis"
+        "type": "long",
+        "logicalType":"timestamp-millis"
     }]
 }

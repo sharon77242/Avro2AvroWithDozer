@@ -38,4 +38,29 @@
             <b>fixesout</b>
         </field>
     </mapping>
+
+    <mapping map-null="false" wildcard="false" map-id="recordMapping">
+        <class-a>org.mashov.generated.BdPerson</class-a>
+        <class-b>org.mashov.generated.BdPersonOut</class-b>
+        <field>
+            <a>identification.id</a>
+            <b>identificationout.idout</b>
+        </field>
+        <field>
+            <a>identification.username</a>
+            <b>identificationout.usernameout</b>
+        </field>
+        <field>
+            <a>cards</a>
+            <b>cardsout</b>
+        </field>
+        <field>
+            <a>additional</a>
+            <b>additionalout</b>
+        </field>
+        <field>
+            <a>children</a>
+            <b>childrenout</b>
+        </field>
+    </mapping>
 </mappings>

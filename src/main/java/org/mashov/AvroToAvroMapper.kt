@@ -27,8 +27,6 @@ class AvroToAvroMapper(mapperConfig: String) {
                                      useDeepCopy: Boolean): T {
         logger.info { "Got new record: $inputRecord" }
 
-
-
         if (newMapping(outputRecord, inputRecord, mapId)) {
             lastDestinationClassName = outputRecord.schema.fullName
             lastSourceClassName = inputRecord.schema.fullName

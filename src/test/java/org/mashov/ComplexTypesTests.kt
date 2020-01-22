@@ -9,44 +9,51 @@ private const val DEFAULT_MAPPER = "avroComplexTypesMapper.xml"
 class ComplexTypesTests {
     private var avroToAvroMapper = AvroToAvroMapper(DEFAULT_MAPPER)
 
-//    private fun generateInputRecordExample(): BdPerson {
-//        val child1 = Child.newBuilder().setName("noob").build()
-//        val child2 = Child.newBuilder().setName("noob2").build()
-//        return BdPerson.newBuilder()
-//                .setIdentification(
-//                        Identification.newBuilder()
-//                                .setId(2)
-//                                .setUsername("sharone")
-//                                .build())
-//                .setUsername("mrscarter")
-//                .setFirstName("Beyonce")
-//                .setLastName("Knowles-Carter")
-//                .setBirthdate("1981-09-04")
-//                .setPhoneNumber("555555555")
-//                .setMiddleName("kaka")
-//                .setSex("Man")
-//                .setCards(Cards.CLUBS)
-//                .setChildren(arrayListOf(child1, child2))
-//                .setAdditional(mapOf("shit1" to "shit2", "shit3" to "shit4"))
-//                .build()
-//    }
-//
-//    private fun generateOutputRecordExample(): BdPersonOut {
-//        return BdPersonOut.newBuilder()
-//                .setIdentificationout(
-//                        IdentificationOut.newBuilder()
-//                                .setIdout(3)
-//                                .setUsernameout("sharone1")
-//                                .build())
-//                .setHeight(1.84)
-//                .setCardsout(CardsOut.DIAMONDS)
-//                .setChildrenout(ArrayList())
-//                .setAdditionalout(HashMap())
-//                .build()
-//    }
+    private fun generateInputRecordExample(): BdPerson {
+        val child1 = Child.newBuilder().setName("noob").build()
+        val child2 = Child.newBuilder().setName("noob2").build()
+        return BdPerson.newBuilder()
+                .setIdentification(
+                        Identification.newBuilder()
+                                .setId(2)
+                                .setUsername("sharone")
+                                .build())
+                .setUsername("mrscarter")
+                .setFirstName("Beyonce")
+                .setLastName("Knowles-Carter")
+                .setBirthdate("1981-09-04")
+                .setPhoneNumber("555555555")
+                .setMiddleName("kaka")
+                .setSex("Man")
+                .setCards(Cards.CLUBS)
+                .setChildren(arrayListOf(child1, child2))
+                .setAdditional(mapOf("shit1" to "shit2", "shit3" to "shit4"))
+                .build()
+    }
+
+    private fun generateExpectedOutputRecord(): BdPersonOut {
+    val child1 = Child.newBuilder().setName("noob").build()
+    val child2 = Child.newBuilder().setName("noob2").build()
+    return BdPersonOut.newBuilder()
+            .setIdentificationout(
+                    IdentificationOut.newBuilder()
+                            .setIdout(2)
+                            .setUsernameout("sharone")
+                            .build())
+            .setCardsout(CardsOut.CLUBS)
+            .setChildrenout(arrayListOf(child1, child2))
+            .setAdditionalout(mapOf("shit1" to "shit2", "shit3" to "shit4"))
+            .build()
+}
 
     @Test
     fun mapRecord() {
+        val inputRecord = generateInputRecordExample()
+        val expectedOutputRecord = generateExpectedOutputRecord()
+
+        val actualOutputRecord =
+                avroToAvroMapper.mapToANewRecord<BdPersonOut>(inputRecord, BdPersonOut.`SCHEMA$`, "recordMapping")
+        assertEquals(expectedOutputRecord, actualOutputRecord, "Record mapping failed")
     }
 
     @Test
