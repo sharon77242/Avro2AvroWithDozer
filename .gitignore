@@ -27,3 +27,6 @@ src/main/java/example/generated/
 target/
 *.iml
 .idea/
+.gradle/
+gradle/
+build/
